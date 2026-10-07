@@ -1,9 +1,4 @@
-import re
-from src.toolkit.errors import(
-    UnknownUnit,
-    IncompatibleUnits,
-    InvalidNumericalValue
-) 
+from src.toolkit.errors import IncompatibleUnits, InvalidNumericalValue, UnknownUnit
 
 units = {
     "mm": "length",
@@ -17,28 +12,20 @@ units = {
     "k": "temperature",
 }
 
-num_pattern = r"[+-]?[1-9]+|[+-]?\d+(?:\.\d+)+"
 
+def converter_validation(value: float, from_unit: str, to_unit: str) -> None:
+    """Проверкка входных данных на наличие ошибки"""
 
-def converter_validation(params: list) -> None:
-    # Величина
-    VALUE = params[1]
-    # Начальная ед. изм. и конечная ед. изм.
-    UNIT1, UNIT2 = params[3].lower(), params[5].lower()
+    from_unit, to_unit = from_unit.lower(), to_unit.lower()
 
-    # Ошибка 1: неизвестная еденица (например, byte)
-    if UNIT1 not in units or UNIT2 not in units:
+    # Ошибка 1: неизвестная еденица (например, "byte")
+    if from_unit not in units or to_unit not in units:
         raise UnknownUnit("неизвестная единица")
 
-    # Ошибка 2: несовместимые еденицы (например, g и c)
-    if units[UNIT1] != units[UNIT2]:
+    # Ошибка 2: несовместимые еденицы (например, "g" и "c")
+    if units[from_unit] != units[to_unit]:
         raise IncompatibleUnits("несовместимые единицы")
 
-    # Ошибка 3: неверное числовое значение (например, 1..2)
-    if not re.fullmatch(num_pattern, VALUE):
+    # Ошибка 3: неверное числовое значение (например, "-154")
+    if (units[from_unit] in ["length", "mass"] or from_unit == "k") and value < 0:
         raise InvalidNumericalValue("неверное числовое значение")
-
-    if (units[UNIT1] in ['length', 'mass'] or UNIT1 == 'k') and '-' in VALUE:
-        raise InvalidNumericalValue("неверное числовое значение")
-
-    

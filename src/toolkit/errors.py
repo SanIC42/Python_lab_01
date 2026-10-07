@@ -20,10 +20,6 @@ class InvalidNumericalValue(Exception):
 """Калькулятор"""
 
 
-class EmptyExpression(Exception):
-    pass
-
-
 class InvalidCharacter(Exception):
     pass
 
@@ -44,7 +40,7 @@ class MissedOperator(Exception):
     pass
 
 
-"""конвертер"""
+"""Конвертер"""
 
 
 class UnknownUnit(Exception):
