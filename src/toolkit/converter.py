@@ -1,9 +1,6 @@
 import re
-from src.toolkit.errors import(
-    UnknownUnit,
-    IncompatibleUnits,
-    InvalidNumericalValue
-) 
+
+from src.toolkit.errors import IncompatibleUnits, InvalidNumericalValue, UnknownUnit
 
 units = {
     "mm": "length",
@@ -21,9 +18,7 @@ num_pattern = r"[+-]?[1-9]+|[+-]?\d+(?:\.\d+)+"
 
 
 def converter_validation(params: list) -> None:
-    # Величина
     VALUE = params[1]
-    # Начальная ед. изм. и конечная ед. изм.
     UNIT1, UNIT2 = params[3].lower(), params[5].lower()
 
     # Ошибка 1: неизвестная еденица (например, byte)
@@ -38,7 +33,5 @@ def converter_validation(params: list) -> None:
     if not re.fullmatch(num_pattern, VALUE):
         raise InvalidNumericalValue("неверное числовое значение")
 
-    if (units[UNIT1] in ['length', 'mass'] or UNIT1 == 'k') and '-' in VALUE:
+    if (units[UNIT1] in ["length", "mass"] or UNIT1 == "k") and "-" in VALUE:
         raise InvalidNumericalValue("неверное числовое значение")
-
-    

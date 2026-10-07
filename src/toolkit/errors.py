@@ -20,10 +20,6 @@ class InvalidNumericalValue(Exception):
 """Калькулятор"""
 
 
-class EmptyExpression(Exception):
-    pass
-
-
 class InvalidCharacter(Exception):
     pass
 
