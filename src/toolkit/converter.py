@@ -18,6 +18,8 @@ num_pattern = r"[+-]?[1-9]+|[+-]?\d+(?:\.\d+)+"
 
 
 def converter_validation(params: list) -> None:
+    """Проверкка входных данных на наличие ошибки"""
+
     VALUE = params[1]
     UNIT1, UNIT2 = params[3].lower(), params[5].lower()
 

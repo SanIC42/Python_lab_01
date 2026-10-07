@@ -14,10 +14,9 @@ zero_pattern = r"(?<![.\d])0+(?![.\d])"
 num_pattern = r"\d+(?:\.\d+)?"
 
 
-"""Проверкка входных данных на наличие ошибки"""
-
-
 def calc_validation(input_string: str) -> None:
+    """Проверкка входных данных на наличие ошибки"""
+
     input_string = " ".join(input_string.split())
 
     if re.fullmatch(num_pattern, input_string):
@@ -48,13 +47,12 @@ def calc_validation(input_string: str) -> None:
         raise InvalidNumericalValue("неверное числовое значение")
 
 
-"""Токенизация входных данных"""
-
-
 def tokenization(valid_string: str) -> list:
-    pattern = rf"([+\-])?\s*({num_pattern})|([+\-*/])"
+    """Токенизация входных данных"""
 
+    pattern = rf"([+\-])?\s*({num_pattern})|([+\-*/])"
     res = []
+
     for elem in re.finditer(pattern, valid_string):
         unar_sign, num, operator = elem.groups()
 
@@ -77,10 +75,9 @@ def tokenization(valid_string: str) -> list:
     return res
 
 
-"""Вычисление значения выражения"""
-
-
 def calculation(tokenized_string: list) -> int | float:
+    """Вычисление значения выражения"""
+
     # Обратная польская нотация
     opn = []
     # Стек
@@ -108,14 +105,12 @@ def calculation(tokenized_string: list) -> int | float:
         "*": operator.mul,
         "/": operator.truediv,
     }
-
     for token in opn:
         if token in operations:
             # Вторым из стека достается ПРАВЫЙ операнд.
             # Первым из стека достается ЛЕВЫЙ операнд.
             b = stack.pop()
             a = stack.pop()
-
             result = operations[token](a, b)
             stack.append(result)
         else:

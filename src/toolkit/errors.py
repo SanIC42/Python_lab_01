@@ -40,7 +40,7 @@ class MissedOperator(Exception):
     pass
 
 
-"""конвертер"""
+"""Конвертер"""
 
 
 class UnknownUnit(Exception):
