@@ -1,6 +1,7 @@
 import argparse
 
 from .calculator import calc_validation, calculation, tokenization
+from .converter import convert, converter_validation
 
 
 def main():
@@ -29,7 +30,8 @@ def main():
         calc_validation(args.expression)
         print(calculation(tokenization(args.expression)))
     elif args.command == "convert":
-        print("Вызов convert")
+        converter_validation(args.value, args.from_unit, args.to_unit)
+        print(convert(args.value, args.from_unit, args.to_unit))
 
 
 if __name__ == "__main__":
