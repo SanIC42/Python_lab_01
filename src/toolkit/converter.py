@@ -1,4 +1,4 @@
-from src.toolkit.errors import IncompatibleUnits, InvalidNumericalValue, UnknownUnit
+from toolkit.errors import IncompatibleUnits, InvalidNumericalValue, UnknownUnit
 
 units = {
     "mm": "length",

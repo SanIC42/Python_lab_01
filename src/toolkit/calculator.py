@@ -1,7 +1,7 @@
 import operator
 import re
 
-from .errors import (
+from toolkit.errors import (
     DevisionByZero,
     InvalidCharacter,
     InvalidNumericalValue,

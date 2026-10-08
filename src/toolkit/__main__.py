@@ -1,7 +1,7 @@
 import argparse
 
-from .calculator import calc_validation, calculation, tokenization
-from .converter import convert, converter_validation
+from toolkit.calculator import calc_validation, calculation, tokenization
+from toolkit.converter import convert, converter_validation
 
 
 def main():
