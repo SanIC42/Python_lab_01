@@ -26,7 +26,7 @@ conversion_coeff = {
 }
 
 
-def converter_validation(value: float, from_unit: str, to_unit: str) -> None:
+def convert_validation(value: float, from_unit: str, to_unit: str) -> None:
     """Проверкка входных данных на наличие ошибки"""
 
     from_unit, to_unit = from_unit.lower(), to_unit.lower()

@@ -1,7 +1,18 @@
 import argparse
+import sys
 
 from toolkit.calculator import calc_validation, calculation, tokenization
-from toolkit.converter import convert, converter_validation
+from toolkit.converter import convert, convert_validation
+from toolkit.errors import (
+    DevisionByZero,
+    IncompatibleUnits,
+    InvalidCharacter,
+    InvalidNumericalValue,
+    MissedOperand,
+    MissedOperator,
+    TwoBinaryOperatorsInARow,
+    UnknownUnit,
+)
 
 
 def main():
@@ -27,11 +38,42 @@ def main():
     args = parser.parse_args()
 
     if args.command == "calc":
-        calc_validation(args.expression)
-        print(calculation(tokenization(args.expression)))
+        try:
+            calc_validation(args.expression)
+            print(calculation(tokenization(args.expression)))
+            sys.exit(0)
+        except InvalidCharacter as e:
+            print(e, file=sys.stderr)
+            sys.exit(2)
+        except MissedOperand as e:
+            print(e, file=sys.stderr)
+            sys.exit(2)
+        except TwoBinaryOperatorsInARow as e:
+            print(e, file=sys.stderr)
+            sys.exit(2)
+        except DevisionByZero as e:
+            print(e, file=sys.stderr)
+            sys.exit(2)
+        except MissedOperator as e:
+            print(e, file=sys.stderr)
+            sys.exit(2)
+        except InvalidNumericalValue as e:
+            print(e, file=sys.stderr)
+            sys.exit(2)
     elif args.command == "convert":
-        converter_validation(args.value, args.from_unit, args.to_unit)
-        print(convert(args.value, args.from_unit, args.to_unit))
+        try:
+            convert_validation(args.value, args.from_unit, args.to_unit)
+            print(convert(args.value, args.from_unit, args.to_unit))
+            sys.exit(0)
+        except UnknownUnit as e:
+            print(e, file=sys.stderr)
+            sys.exit(2)
+        except IncompatibleUnits as e:
+            print(e, file=sys.stderr)
+            sys.exit(2)
+        except InvalidNumericalValue as e:
+            print(e, file=sys.stderr)
+            sys.exit(2)
 
 
 if __name__ == "__main__":

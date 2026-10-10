@@ -1,51 +1,49 @@
 """ "Общие"""
-
-
-class TooManyArgs(Exception):
+class BaseError(Exception):
     pass
 
 
-class NotEnoughArgs(Exception):
+class TooManyArgs(BaseError):
     pass
 
 
-class InvalidCommand(Exception):
+class NotEnoughArgs(BaseError):
     pass
 
 
-class InvalidNumericalValue(Exception):
+class InvalidNumericalValue(BaseError):
     pass
 
 
 """Калькулятор"""
 
 
-class InvalidCharacter(Exception):
+class InvalidCharacter(BaseError):
     pass
 
 
-class MissedOperand(Exception):
+class MissedOperand(BaseError):
     pass
 
 
-class TwoBinaryOperatorsInARow(Exception):
+class TwoBinaryOperatorsInARow(BaseError):
     pass
 
 
-class DevisionByZero(Exception):
+class DevisionByZero(BaseError):
     pass
 
 
-class MissedOperator(Exception):
+class MissedOperator(BaseError):
     pass
 
 
 """Конвертер"""
 
 
-class UnknownUnit(Exception):
+class UnknownUnit(BaseError):
     pass
 
 
-class IncompatibleUnits(Exception):
+class IncompatibleUnits(BaseError):
     pass
