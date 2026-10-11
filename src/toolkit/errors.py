@@ -1,4 +1,6 @@
 """ "Общие"""
+
+
 class BaseError(Exception):
     pass
 
@@ -16,6 +18,10 @@ class InvalidNumericalValue(BaseError):
 
 
 """Калькулятор"""
+
+
+class EmptyExpression(BaseError):
+    pass
 
 
 class InvalidCharacter(BaseError):

@@ -3,6 +3,7 @@ import re
 
 from toolkit.errors import (
     DevisionByZero,
+    EmptyExpression,
     InvalidCharacter,
     InvalidNumericalValue,
     MissedOperand,
@@ -10,7 +11,9 @@ from toolkit.errors import (
     TwoBinaryOperatorsInARow,
 )
 
+# Паттерн одиночного нуля
 zero_pattern = r"(?<![.\d])0+(?![.\d])"
+# Паттерн числа
 num_pattern = r"\d+(?:\.\d+)?"
 
 
@@ -21,6 +24,9 @@ def calc_validation(input_string: str) -> None:
 
     if re.fullmatch(num_pattern, input_string):
         return
+
+    if input_string == "":
+        raise EmptyExpression("пустое выражение")
 
     # Ошибка 1: Недопустимый символ (буквы, спецсимволы)
     if re.search(r"[A-Za-z!@#$%^&()?><;:`~_=]+", input_string):
@@ -48,34 +54,30 @@ def calc_validation(input_string: str) -> None:
 
 
 def tokenization(valid_string: str) -> list:
-    """Токенизация входных данных"""
-
-    pattern = rf"([+\-])?\s*({num_pattern})|([+\-*/])"
+    # Паттерн токена (число либо оператор)
+    pattern = rf"({num_pattern})|([+\-*/])"
+    # Токенизированная строка
     res = []
 
     for elem in re.finditer(pattern, valid_string):
-        unar_sign, num, operator = elem.groups()
+        num, operator = elem.groups()
 
-        # Если нашли число (возможно со знаком)
+        # Если число, то пытаемся
+        # склеить его с унарным знаком, идущим до него,
+        # или просто добавляем его в res
         if num:
-            if res and isinstance(res[-1], (int, float)):
-                res.append(unar_sign)
-                token = num
+            if res and res[-1] in "+-" and (len(res) == 1 or type(res[-2]) == str):
+                res = res[:-1] + [float(f"{res[-1]}{num}")]
             else:
-                if unar_sign:
-                    token = f"{unar_sign}{num}"
-                else:
-                    token = num
-            res.append(float(token) if "." in token else int(token))
-
-        # Если нашли обычный оператор
-        elif operator:
+                res.append(float(num))
+        # Если строка, то просто добваляем в res
+        else:
             res.append(operator)
 
     return res
 
 
-def calculation(tokenized_string: list) -> int | float:
+def calculation(tokenized_string: list) -> float:
     """Вычисление значения выражения"""
 
     # Обратная польская нотация

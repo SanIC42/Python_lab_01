@@ -5,6 +5,7 @@ from toolkit.calculator import calc_validation, calculation, tokenization
 from toolkit.converter import convert, convert_validation
 from toolkit.errors import (
     DevisionByZero,
+    EmptyExpression,
     IncompatibleUnits,
     InvalidCharacter,
     InvalidNumericalValue,
@@ -18,15 +19,23 @@ from toolkit.errors import (
 def main():
     parser = argparse.ArgumentParser(prog="python -m toolkit")
     subparsers = parser.add_subparsers(
-        dest="command", required=True, help="Доступные команды"
+        dest="command",
+        required=True,
+        help="Доступные команды",
     )
 
     # Настройка команды: calc
-    parser_calc = subparsers.add_parser("calc", help="Калькулятор")
+    parser_calc = subparsers.add_parser(
+        "calc", help="Калькулятор", usage='python -m toolkit calc "expression"'
+    )
     parser_calc.add_argument("expression", type=str, help="Выражение для вычисления")
 
     # Настройка команды: convert
-    parser_convert = subparsers.add_parser("convert", help="Конвертер")
+    parser_convert = subparsers.add_parser(
+        "convert",
+        help="Конвертер",
+        usage="python -m toolkit convert value --from FROM_UNIT --to TO_UNIT",
+    )
     parser_convert.add_argument("value", type=float, help="Значение")
     parser_convert.add_argument(
         "--from", dest="from_unit", type=str, required=True, help="Исходная единица"
@@ -42,6 +51,9 @@ def main():
             calc_validation(args.expression)
             print(calculation(tokenization(args.expression)))
             sys.exit(0)
+        except EmptyExpression as e:
+            print(e, file=sys.stderr)
+            sys.exit(2)
         except InvalidCharacter as e:
             print(e, file=sys.stderr)
             sys.exit(2)

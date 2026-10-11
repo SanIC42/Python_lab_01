@@ -14,7 +14,7 @@ units = {
 
 # Базовые единицы:
 # Масса - г
-# Длина - кг
+# Длина - м
 # Температура - к
 conversion_coeff = {
     "mm": 0.001,
@@ -39,20 +39,21 @@ def convert_validation(value: float, from_unit: str, to_unit: str) -> None:
     if units[from_unit] != units[to_unit]:
         raise IncompatibleUnits("несовместимые единицы")
 
-    # Ошибка 3: неверное числовое значение (отрицательная длина или недопустимая температура)
+    # Ошибка 3: неверное числовое значение (отрицательная длина / масса или недопустимая температура)
     if (units[from_unit] in ("length", "mass") or from_unit == "k") and value < 0:
         raise InvalidNumericalValue("неверное числовое значение")
 
-    if units[from_unit] == "c" and value < -273.15:
+    if from_unit == "c" and value < -273.15:
         raise InvalidNumericalValue("неверное числовое значение")
 
-    if units[from_unit] == "f" and value < -459.67:
+    if from_unit == "f" and value < -459.67:
         raise InvalidNumericalValue("неверное числовое значение")
 
 
 def convert(value: float, from_unit: str, to_unit: str) -> float:
     """Конвертация величины в"""
 
+    from_unit, to_unit = from_unit.lower(), to_unit.lower()
     category = units[from_unit]
 
     # Перевод для длины и массы
