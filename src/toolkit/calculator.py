@@ -12,6 +12,7 @@ from toolkit.errors import (
 )
 
 # Паттерн одиночного нуля
+# Нули, справа и слева от которых нет цифр и точек
 zero_pattern = r"(?<![.\d])0+(?![.\d])"
 # Паттерн числа
 num_pattern = r"\d+(?:\.\d+)?"
@@ -37,6 +38,7 @@ def calc_validation(input_string: str) -> None:
         raise MissedOperand("пропущенный операнд")
 
     # Ошибка 3: Два бинарных оператора подряд (например, "1 + * 2")
+    # 2 */ подряд, +- и */ подряд, 3 +- подряд
     if re.search(r"[*/]\s?[*/]|[+\-]\s?[*/]|[+\-*/]\s?[+\-]\s?[+\-]", input_string):
         raise TwoBinaryOperatorsInARow("два бинарных оператора подряд")
 
@@ -49,6 +51,7 @@ def calc_validation(input_string: str) -> None:
         raise MissedOperator("пропущенный оператор")
 
     # Ошибка 6: Любые кривые числа (например, "1..2", ".", ".5")
+    # Паттерн: точки, одиночкая точка, число с одной точкой, число после точки
     if re.search(r"\.{2,}|(?<!\d)\.(?!\d)|\d+\.(?!\d)|(?<!\d)\.\d+", input_string):
         raise InvalidNumericalValue("неверное числовое значение")
 
