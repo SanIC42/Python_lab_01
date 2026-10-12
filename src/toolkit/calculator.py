@@ -87,6 +87,7 @@ def calculation(tokenized_string: list) -> float:
     # Приоритеты операций
     priorities = {"+": 1, "-": 1, "*": 2, "/": 2}
 
+    # Формирование обратной польской нотации (ОПН)
     for token in tokenized_string:
         # Быстрая проверка: если токен - оператор
         if token in priorities:
@@ -98,8 +99,8 @@ def calculation(tokenized_string: list) -> float:
             opn.append(token)
 
     # Выталкиваем все оставшиеся операторы из стека в конец ОПН
-    while stack:
-        opn.append(stack.pop())
+    opn += stack
+    stack = []
 
     operations = {
         "+": operator.add,
@@ -107,6 +108,8 @@ def calculation(tokenized_string: list) -> float:
         "*": operator.mul,
         "/": operator.truediv,
     }
+
+    # Подсчёт выражения
     for token in opn:
         if token in operations:
             # Вторым из стека достается ПРАВЫЙ операнд.
