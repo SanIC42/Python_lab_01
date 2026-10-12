@@ -99,7 +99,7 @@ def calculation(tokenized_string: list) -> float:
             opn.append(token)
 
     # Выталкиваем все оставшиеся операторы из стека в конец ОПН
-    opn += stack
+    opn += stack[::-1]
     stack = []
 
     operations = {
